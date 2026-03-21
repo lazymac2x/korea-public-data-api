@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: Korea Public Data API
+  version: 1.0.0
+  description: |
+    Unified REST API for Korean public data — weather, exchange rates, holidays, Seoul transport, and stock market.
+    No API key required for the underlying data sources.
+  contact:
+    name: lazymac2x
+    url: https://github.com/lazymac2x/korea-public-data-api
+
+servers:
+  - url: http://localhost:3200
+    description: Local development
+
+paths:
+  /api/v1/weather/{city}:
+    get:
+      operationId: getWeather
+      summary: Get weather for a Korean city
+      tags: [Weather]
+      parameters:
+        - name: city
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [seoul, busan, jeju, incheon, daegu, daejeon, gwangju, ulsan, suwon, changwon, jeonju, chuncheon, gangneung, pohang, yeosu]
+      responses:
+        '200':
+          description: Weather data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  data:
+                    type: object
+                    properties:
+                      city: { type: string }
+                      current: { type: object }
+                      forecast: { type: array }
+
+  /api/v1/exchange/{currency}:
+    get:
+      operationId: getExchangeRate
+      summary: Get KRW exchange rate for a currency
+      tags: [Exchange Rates]
+      parameters:
+        - name: currency
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [USD, EUR, JPY, CNY, GBP, AUD, CAD, CHF, HKD, SGD]
+      responses:
+        '200':
+          description: Exchange rate data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  data:
+                    type: object
+                    properties:
+                      base: { type: string }
+                      target: { type: string }
+                      rate: { type: number }
+                      krw_per_unit: { type: number }
+
+  /api/v1/exchange:
+    get:
+      operationId: getAllExchangeRates
+      summary: Get all KRW exchange rates
+      tags: [Exchange Rates]
+      responses:
+        '200':
+          description: All exchange rates
+
+  /api/v1/holidays/{year}:
+    get:
+      operationId: getHolidays
+      summary: Get Korean public holidays for a year
+      tags: [Holidays]
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 2000
+            maximum: 2100
+      responses:
+        '200':
+          description: Holiday data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  data:
+                    type: object
+                    properties:
+                      country: { type: string }
+                      year: { type: integer }
+                      count: { type: integer }
+                      holidays: { type: array }
+
+  /api/v1/transport/seoul/status:
+    get:
+      operationId: getSeoulTransportStatus
+      summary: Get Seoul public transport status
+      tags: [Transport]
+      responses:
+        '200':
+          description: Transport status data
+
+  /api/v1/stocks/summary:
+    get:
+      operationId: getStockMarketSummary
+      summary: Get Korean stock market summary (KOSPI, KOSDAQ)
+      tags: [Stocks]
+      responses:
+        '200':
+          description: Stock market summary

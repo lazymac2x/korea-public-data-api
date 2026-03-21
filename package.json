@@ -1,0 +1,28 @@
+{
+  "name": "korea-public-data-api",
+  "version": "1.0.0",
+  "description": "Unified REST API + MCP server for Korean public data (weather, exchange rates, holidays, transport, stocks)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "mcp": "node src/mcp-server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": [
+    "korea",
+    "public-data",
+    "mcp",
+    "weather",
+    "exchange-rate",
+    "holidays",
+    "seoul",
+    "transport",
+    "api"
+  ],
+  "author": "lazymac2x",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
+  }
+}
